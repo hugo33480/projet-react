@@ -17,12 +17,17 @@ function Home() {
       if (user) {
         const { uid } = user;
 
-        axios.get('http://ddragon.leagueoflegends.com/cdn/13.3.1/data/fr_FR/champion.json').then((res) => {
+        axios.get('http://ddragon.leagueoflegends.com/cdn/13.3.1/data/fr_FR/champion.json').then(async (res) => {
           if (!Object.keys(champs).length) {
+            const champsInter = res.data.data;
+            // eslint-disable-next-line no-restricted-syntax
+            for (const champName of Object.keys(champsInter)) {
+              // eslint-disable-next-line no-await-in-loop
+              const res2 = await axios.get(`http://ddragon.leagueoflegends.com/cdn/13.4.1/data/fr_FR/champion/${champName}.json`);
+              champsInter[champName].skins = res2.data.data[champName].skins;
+            }
             // eslint-disable-next-line no-shadow
-            setChamps(res.data.data);
-            // eslint-disable-next-line no-shadow
-            console.log('SIUUUUU', JSON.parse(JSON.stringify(champs)));
+            setChamps(champsInter);
           }
         });
 
@@ -62,8 +67,15 @@ function Home() {
                   <div id={`carousel-${champName}`} className="carousel slide">
                     <div className="carousel-inner">
                       <div className="carousel-item active">
-                        { JSON.stringify(champs) }
+                        <img src={`http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champName}_0.jpg`} className="card-img-top" alt="" />
                       </div>
+                      {
+                        champs[champName].skins?.map((skin) => (skin.num !== 0 ? (
+                          <div className="carousel-item" key={skin.id}>
+                            <img src={`http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champName}_${skin.num}.jpg`} className="card-img-top" alt="" />
+                          </div>
+                        ) : null))
+                      }
                     </div>
                     <button
                       className="carousel-control-prev"
@@ -86,7 +98,6 @@ function Home() {
                   </div>
                   <div className="card-body">
                     <span>{champName}</span>
-
                   </div>
                 </div>
 
