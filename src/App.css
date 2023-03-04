@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+@font-face {
+  font-family: bff-italic;
+  src: url("./assets/fonts/BeaufortforLOL-Italic.otf") format("opentype");
+}
+
+@font-face {
+  font-family: bff-medium;
+  src: url("./assets/fonts/BeaufortforLOL-Medium.otf") format("opentype");
+}
