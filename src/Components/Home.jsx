@@ -8,6 +8,7 @@ import axios from 'axios';
 import { auth } from '../firebase';
 import logo from '../assets/LoL_Logo_Rendered_LARGE.png';
 import '../App.css';
+import Card from './Card';
 
 function Home() {
   // const apiKey = 'RGAPI-a6e09577-ad44-4fe9-b9ac-ff4f442ffd1c';
@@ -71,67 +72,7 @@ function Home() {
         {
             // eslint-disable-next-line jsx-a11y/alt-text
               Object.keys(champs).map((champName) => (
-                <div
-                  key={champName}
-                  className="card mx-2 mb-3"
-                  style={{
-                    width: 300, height: 400, border: 'solid 2px #C8AA6E', background: '#005A82', color: 'white',
-                  }}
-                >
-                  {/* eslint-disable-next-line jsx-a11y/alt-text */}
-                  <div id={`carousel-${champName}`} className="carousel slide">
-                    <div className="carousel-inner">
-                      <div className="carousel-item active">
-                        <img src={`http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champName}_0.jpg`} className="card-img-top" alt="" />
-                      </div>
-                      {
-                        champs[champName].skins?.map((skin) => (skin.num !== 0 ? (
-                          <div className="carousel-item" key={skin.id}>
-                            <div>
-                              <img src={`http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champName}_${skin.num}.jpg`} className="card-img-top" alt="" />
-                            </div>
-                            <div style={{ fontWeight: 'bold', fontFamily: 'bff-medium', zIndex: 10 }}>
-                              <span>
-                                {champName}
-                                ,
-                                {' '}
-                              </span>
-                              <span>{champs[champName].title}</span>
-                            </div>
-                          </div>
-                        ) : null))
-                      }
-                    </div>
-                    <button
-                      className="carousel-control-prev"
-                      type="button"
-                      data-bs-target={`#carousel-${champName}`}
-                      data-bs-slide="prev"
-                    >
-                      <span className="carousel-control-prev-icon" aria-hidden="true" />
-                      <span className="visually-hidden">Previous</span>
-                    </button>
-                    <button
-                      className="carousel-control-next"
-                      type="button"
-                      data-bs-target={`#carousel-${champName}`}
-                      data-bs-slide="next"
-                    >
-                      <span className="carousel-control-next-icon" aria-hidden="true" />
-                      <span className="visually-hidden">Next</span>
-                    </button>
-                  </div>
-                  <div className="card-body d-flex justify-content-center flex-column align-items-center">
-                    <p style={{ fontFamily: 'bff-italic', fontSize: '14px' }}>
-                      {/* eslint-disable-next-line react/no-unescaped-entities */}
-                      "
-                      {champs[champName].blurb}
-                      {/* eslint-disable-next-line react/no-unescaped-entities */}
-                      "
-                    </p>
-                  </div>
-                </div>
-
+                <Card champNameProp={champName} champProp={champs[champName]} key={champName} />
               ))
                 }
       </div>

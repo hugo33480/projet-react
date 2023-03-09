@@ -3,24 +3,30 @@ import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase';
+import { collection, addDoc } from 'firebase/firestore';
+import { auth, db } from '../firebase';
 
 function Signup() {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [summonerName, setSummonerName] = useState('');
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
     await createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         // Signed in
         const { user } = userCredential;
         console.log(user);
         navigate('/login');
         // ...
+        await addDoc(collection(db, 'userInfo'), {
+          uid: user.uid,
+          summonerName,
+        });
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -44,6 +50,22 @@ function Signup() {
               <div className="card-body px-5">
                 <form>
                   <div>
+                    {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                    <label htmlFor="email-address">
+                      {/* eslint-disable-next-line react/no-unescaped-entities */}
+                      Nom d'invocateur
+                    </label>
+                    <input
+                      type="text"
+                      label="Nom d'invocateur"
+                      value={summonerName}
+                      className="form-control"
+                      onChange={(e) => setSummonerName(e.target.value)}
+                      required
+                      placeholder="Nom d'invocateur"
+                    />
+                  </div>
+                  <div className="mt-3">
                     {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                     <label htmlFor="email-address">
                       Adresse mail
