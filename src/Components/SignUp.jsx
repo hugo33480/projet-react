@@ -23,10 +23,12 @@ function Signup() {
         console.log(user);
         navigate('/login');
         // ...
-        await addDoc(collection(db, 'userInfo'), {
-          uid: user.uid,
-          summonerName,
-        });
+        if (summonerName && summonerName.length) {
+          await addDoc(collection(db, 'userInfo'), {
+            uid: user.uid,
+            summonerName,
+          });
+        }
       })
       .catch((error) => {
         const errorCode = error.code;

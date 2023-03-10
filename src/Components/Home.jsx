@@ -9,8 +9,13 @@ import { auth } from '../firebase';
 import logo from '../assets/LoL_Logo_Rendered_LARGE.png';
 import '../App.css';
 import Card from './Card';
+// eslint-disable-next-line import/named,import/no-cycle
+import { UserContext } from '../App';
+import ModalLink from './ModalLink';
 
 function Home() {
+  const context = React.useContext(UserContext);
+
   // const apiKey = 'RGAPI-a6e09577-ad44-4fe9-b9ac-ff4f442ffd1c';
 
   const [champs, setChamps] = useState({});
@@ -19,6 +24,7 @@ function Home() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         const { uid } = user;
+        context.getUserInfo();
 
         axios.get('http://ddragon.leagueoflegends.com/cdn/13.3.1/data/fr_FR/champion.json').then(async (res) => {
           if (!Object.keys(champs).length) {
@@ -47,6 +53,7 @@ function Home() {
   const handleLogout = () => {
     signOut(auth).then(() => {
       navigate('/login');
+      localStorage.removeItem('uid');
       console.log('Signed out successfully');
     }).catch((error) => {
       console.error(error);
@@ -55,27 +62,57 @@ function Home() {
 
   return (
     <section style={{ background: '#010A13' }}>
-      <div className="d-flex justify-content-between align-items-center mb-5" style={{ height: 100, background: '#0A1428', borderBottom: 'solid 1px #C89B3C' }}>
+      <div
+        className="d-flex justify-content-between align-items-center mb-5"
+        style={{ height: 100, background: '#0A1428', borderBottom: 'solid 1px #C89B3C' }}
+      >
         <img src={logo} alt="" />
-        {/* eslint-disable-next-line react/button-has-type */}
-        <button
-          className="btn btn-primary"
-          onClick={handleLogout}
-          style={{
-            background: '#0397AB', borderColor: '#0397AB', height: '50%', marginRight: '20px',
-          }}
-        >
-          Déconnexion
-        </button>
+        <div>
+          {/* eslint-disable-next-line react/button-has-type */}
+          {
+          !context.summonerName.length
+            ? (
+          // eslint-disable-next-line react/button-has-type
+              <button
+                className="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#modal-link"
+                style={{
+                  background: '#0397AB', borderColor: '#0397AB', height: '50%', marginRight: '20px',
+                }}
+              >
+                Associer
+                {' '}
+                <i className="fa-solid fa-link" />
+              </button>
+            ) : (
+              <span style={{ color: 'white', marginRight: '30px' }}>
+                <span style={{ fontWeight: 'bold' }}>Compte: </span>
+                <span>{context.summonerName}</span>
+              </span>
+            )
+        }
+          {/* eslint-disable-next-line react/button-has-type */}
+          <button
+            className="btn btn-primary"
+            onClick={handleLogout}
+            style={{
+              background: '#0397AB', borderColor: '#0397AB', height: '50%', marginRight: '20px',
+            }}
+          >
+            Déconnexion
+          </button>
+        </div>
       </div>
       <div className="d-flex flex-wrap">
         {
-            // eslint-disable-next-line jsx-a11y/alt-text
+              // eslint-disable-next-line jsx-a11y/alt-text
               Object.keys(champs).map((champName) => (
                 <Card champNameProp={champName} champProp={champs[champName]} key={champName} />
               ))
-                }
+          }
       </div>
+      <ModalLink />
     </section>
   );
 }

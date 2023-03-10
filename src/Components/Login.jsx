@@ -17,11 +17,12 @@ function Login() {
         // Signed in
         const { user } = userCredential;
         navigate('/home');
-        console.log(user);
+        localStorage.setItem('uid', user.uid);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        // eslint-disable-next-line no-console
         console.log(errorCode, errorMessage);
       });
   };
