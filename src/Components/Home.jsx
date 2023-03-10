@@ -16,8 +16,6 @@ import ModalLink from './ModalLink';
 function Home() {
   const context = React.useContext(UserContext);
 
-  // const apiKey = 'RGAPI-a6e09577-ad44-4fe9-b9ac-ff4f442ffd1c';
-
   const [champs, setChamps] = useState({});
 
   useEffect(() => {

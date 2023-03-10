@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ModalMasteries from './ModalMasteries';
 
 // eslint-disable-next-line react/prop-types
 function Card({ champProp, champNameProp }) {
@@ -77,7 +78,15 @@ function Card({ champProp, champNameProp }) {
           {/* eslint-disable-next-line react/no-unescaped-entities */}
           "
         </p>
+        <i
+          className="fa-solid fa-eye"
+          style={{ cursor: 'pointer' }}
+          data-bs-toggle="modal"
+          data-bs-target="#modal-masteries"
+        />
       </div>
+
+      <ModalMasteries />
     </div>
   );
 }
