@@ -1,18 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 // eslint-disable-next-line import/no-cycle
 import { UserContext } from '../App';
 
-function ModalMasteries() {
+// eslint-disable-next-line react/prop-types
+function ModalMasteries({ isOpen }) {
   const apiKey = 'RGAPI-a6e09577-ad44-4fe9-b9ac-ff4f442ffd1c';
-
   const context = React.useContext(UserContext);
+  const [isModalOpen] = useState(isOpen);
 
   useEffect(() => {
-    axios.get(`https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${context.summonerName}?api_key=${apiKey}`).then((resp) => {
-      console.log('ici', resp);
-    });
-  }, []);
+    console.log('ici', context);
+    if (isModalOpen) {
+      axios.get(`https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${context.summonerName}?api_key=${apiKey}`).then((resp) => {
+        console.log('ici', resp);
+      });
+    }
+  }, [isModalOpen]);
 
   return (
     <div

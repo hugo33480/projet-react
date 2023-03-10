@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+// eslint-disable-next-line import/no-cycle
 import ModalMasteries from './ModalMasteries';
 
 // eslint-disable-next-line react/prop-types
 function Card({ champProp, champNameProp }) {
   const [champ] = useState(champProp);
   const [champName] = useState(champNameProp);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <div
       className="card mx-2 mb-3"
@@ -78,15 +80,18 @@ function Card({ champProp, champNameProp }) {
           {/* eslint-disable-next-line react/no-unescaped-entities */}
           "
         </p>
+        {/* eslint-disable-next-line max-len */}
+        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
         <i
           className="fa-solid fa-eye"
           style={{ cursor: 'pointer' }}
           data-bs-toggle="modal"
           data-bs-target="#modal-masteries"
+          onClick={() => setIsModalOpen(!isModalOpen)}
         />
       </div>
 
-      <ModalMasteries />
+      <ModalMasteries isOpen={isModalOpen} />
     </div>
   );
 }
