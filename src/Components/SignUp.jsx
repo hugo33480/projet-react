@@ -20,7 +20,6 @@ function Signup() {
       .then(async (userCredential) => {
         // Signed in
         const { user } = userCredential;
-        console.log(user);
         navigate('/login');
         // ...
         if (summonerName && summonerName.length) {

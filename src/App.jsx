@@ -18,8 +18,15 @@ import Login from './Components/Login';
 export const UserContext = React.createContext(undefined);
 
 function App() {
+  const [uid, setUid] = useState(localStorage.getItem('uid'));
+
+  // eslint-disable-next-line no-shadow
+  const reloadUid = (uid) => {
+    setUid(uid);
+  };
+
   useEffect(() => {
-    const uid = localStorage.getItem('uid');
+    console.log('lalalal', uid);
     if (uid) {
       const q = query(collection(db, 'userInfo'), where('uid', '==', uid));
       getDocs(q).then((querySnapshot) => {
@@ -36,7 +43,7 @@ function App() {
         console.log('ici', context);
       });
     }
-  }, []);
+  }, [uid]);
 
   const [context, setContext] = useState('');
 
@@ -45,7 +52,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route index element={<Navigate to="/login" />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login reloadUid={reloadUid} />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/home" element={<Home />} />
           <Route path="blogs" element={<ModalLink />} />

@@ -15,7 +15,6 @@ function ModalMasteries({ currentChamp }) {
     if (context && currentChamp) {
       axios.get(`https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${context}?api_key=${apiKey}`).then((resp) => {
         axios.get(`https://euw1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/${resp.data.id}/by-champion/${currentChamp}?api_key=${apiKey}`).then((r) => {
-          console.log('lalalaalaololo0', r);
           setChampLvl(r.data.championLevel);
           setChampPoints(r.data.championPoints);
         });

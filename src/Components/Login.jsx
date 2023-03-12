@@ -5,7 +5,8 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
 
-function Login() {
+// eslint-disable-next-line react/prop-types
+function Login({ reloadUid }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,6 +18,7 @@ function Login() {
         // Signed in
         const { user } = userCredential;
         navigate('/home');
+        reloadUid(user.uid);
         localStorage.setItem('uid', user.uid);
       })
       .catch((error) => {
