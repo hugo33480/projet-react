@@ -12,17 +12,24 @@ import Card from './Card';
 // eslint-disable-next-line import/named,import/no-cycle
 import { UserContext } from '../App';
 import ModalLink from './ModalLink';
+import ModalMasteries from './ModalMasteries';
 
 function Home() {
   const context = React.useContext(UserContext);
 
   const [champs, setChamps] = useState({});
+  const [currentChampMasteries, setCurrentChampMasteries] = useState('');
+
+  const champMasteries = (champName) => {
+    console.log('lolololo', champName);
+    setCurrentChampMasteries(champName);
+    console.log('lalala', currentChampMasteries);
+  };
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         const { uid } = user;
-        context.getUserInfo();
 
         axios.get('http://ddragon.leagueoflegends.com/cdn/13.3.1/data/fr_FR/champion.json').then(async (res) => {
           if (!Object.keys(champs).length) {
@@ -68,7 +75,7 @@ function Home() {
         <div>
           {/* eslint-disable-next-line react/button-has-type */}
           {
-          !context.summonerName.length
+          !context
             ? (
           // eslint-disable-next-line react/button-has-type
               <button
@@ -86,7 +93,7 @@ function Home() {
             ) : (
               <span style={{ color: 'white', marginRight: '30px' }}>
                 <span style={{ fontWeight: 'bold' }}>Compte: </span>
-                <span>{context.summonerName}</span>
+                <span>{context}</span>
               </span>
             )
         }
@@ -106,11 +113,14 @@ function Home() {
         {
               // eslint-disable-next-line jsx-a11y/alt-text
               Object.keys(champs).map((champName) => (
-                <Card champNameProp={champName} champProp={champs[champName]} key={champName} />
+                // eslint-disable-next-line max-len
+                <Card champNameProp={champName} champProp={champs[champName]} champMasteries={champMasteries} key={champName} />
               ))
           }
       </div>
       <ModalLink />
+
+      <ModalMasteries currentChamp={currentChampMasteries} />
     </section>
   );
 }

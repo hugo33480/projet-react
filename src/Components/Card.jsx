@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 // eslint-disable-next-line import/no-cycle
-import ModalMasteries from './ModalMasteries';
 
 // eslint-disable-next-line react/prop-types
-function Card({ champProp, champNameProp }) {
+function Card({ champProp, champNameProp, champMasteries }) {
   const [champ] = useState(champProp);
   const [champName] = useState(champNameProp);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div
       className="card mx-2 mb-3"
@@ -87,11 +86,9 @@ function Card({ champProp, champNameProp }) {
           style={{ cursor: 'pointer' }}
           data-bs-toggle="modal"
           data-bs-target="#modal-masteries"
-          onClick={() => setIsModalOpen(!isModalOpen)}
+          onClick={() => (champMasteries(champ.key))}
         />
       </div>
-
-      <ModalMasteries isOpen={isModalOpen} />
     </div>
   );
 }

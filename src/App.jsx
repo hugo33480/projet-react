@@ -15,12 +15,10 @@ import ModalLink from './Components/ModalLink';
 import SignUp from './Components/SignUp';
 import Login from './Components/Login';
 
-export const UserContext = React.createContext();
+export const UserContext = React.createContext(undefined);
 
 function App() {
   useEffect(() => {
-  }, []);
-  const getUserInfo = () => {
     const uid = localStorage.getItem('uid');
     if (uid) {
       const q = query(collection(db, 'userInfo'), where('uid', '==', uid));
@@ -32,18 +30,15 @@ function App() {
         }
 
         // eslint-disable-next-line no-use-before-define
-        setContext({ summonerName: result, getUserInfo });
+        setContext(result);
+
+        // eslint-disable-next-line no-use-before-define
+        console.log('ici', context);
       });
     }
+  }, []);
 
-    // eslint-disable-next-line no-use-before-define
-    setContext({ summonerName: '', getUserInfo });
-  };
-
-  const [context, setContext] = useState({
-    summonerName: '',
-    getUserInfo,
-  });
+  const [context, setContext] = useState('');
 
   return (
     <UserContext.Provider value={context}>
